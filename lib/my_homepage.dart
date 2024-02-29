@@ -9,7 +9,6 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Build Times");
     final counter = Provider.of<Counter>(context, listen: false);
     return Scaffold(
       appBar: AppBar(title: Text(title)),
@@ -20,19 +19,47 @@ class MyHomePage extends StatelessWidget {
             const Text(
               'You have pushed the button this many times:',
             ),
+
+            // This will rebuild everytime counter emits any change
             Consumer<Counter>(
-              builder: (context, value, child) => Text(
-                "${value.counter}",
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
+              builder: (context, value, child) {
+                print("Consumer building");
+                return Text(
+                  "${value.counter}",
+                  style: Theme.of(context).textTheme.headlineMedium,
+                );
+              },
+            ),
+
+            // This will rebuild only when selectorCounter value is changed
+            Selector<Counter, int>(
+              selector: (context, counter) => counter.selectorCounter,
+              builder: (context, value, child) {
+                print("Selector building");
+                return Text(
+                  "$value",
+                  style: Theme.of(context).textTheme.headlineMedium,
+                );
+              },
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: counter.increment,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: counter.increment,
+            tooltip: 'Increment',
+            child: const Icon(Icons.add),
+          ),
+          FloatingActionButton.small(
+            backgroundColor: Colors.pink,
+            onPressed: counter.incSelectorCounter,
+            tooltip: 'Increment',
+            child: const Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }
