@@ -13,4 +13,11 @@ class Counter with ChangeNotifier {
     selectorCounter++;
     notifyListeners();
   }
+
+  // Create one function to decrement counter value
+  void decrementCounter() {
+    counter--;
+    notifyListeners();
+  }
+  
 }
