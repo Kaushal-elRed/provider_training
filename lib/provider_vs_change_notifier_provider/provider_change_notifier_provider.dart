@@ -42,9 +42,11 @@ class ProviderVsChangeNotifierProvider extends StatelessWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Consumer<CounterProvider>(builder: (context, value, child) {
-            return Text("Counter ${counter._x}");
-          }),
+          Consumer<CounterProvider>(
+            builder: (context, value, child) {
+              return Text("Counter ${counter._x}");
+            },
+          ),
           TextButton(
             child: const Text("Tap me"),
             onPressed: () {
