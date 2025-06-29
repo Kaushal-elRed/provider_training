@@ -9,6 +9,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Build method building");
     final counter = Provider.of<Counter>(context, listen: false);
     return Scaffold(
       appBar: AppBar(title: Text(title)),
@@ -31,6 +32,25 @@ class MyHomePage extends StatelessWidget {
               },
             ),
 
+            Builder(
+              builder: (context) {
+                print("Builder building");
+                final value = Provider.of<Counter>(context).counter;
+                return Column(
+                  children: [
+                    notToRebuild(),
+                    Text(
+                      "$value",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                  ],
+                );
+              },
+            ),
+            // Selector2<int, CounterProvider, CounterProvider1>(
+            //   builder: (context, value, child) {},
+            //   selector: (p0, p1, p2) => CounterProvider1(),
+            // ),
             // This will rebuild only when selectorCounter value is changed
             Selector<Counter, int>(
               selector: (context, counter) => counter.selectorCounter,
@@ -62,5 +82,10 @@ class MyHomePage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget notToRebuild() {
+    print("Recalled");
+    return const Text("data");
   }
 }
